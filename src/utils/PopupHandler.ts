@@ -38,7 +38,7 @@ class PopupHandler extends EventEmitter {
           this.window = undefined;
         }
         if (this.window === undefined) clearInterval(this.windowTimer);
-      }, 500)
+      }, 500),
     );
   }
 

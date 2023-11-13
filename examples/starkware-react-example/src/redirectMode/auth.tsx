@@ -50,7 +50,7 @@ class RedirectAuth extends React.Component<IProps, IState> {
     const account = getStarkHDAccount(
       ((this.state.loginDetails?.result as any)?.privateKey as string).padStart(64, "0"),
       index,
-      STARKNET_NETWORKS.testnet
+      STARKNET_NETWORKS.testnet,
     );
     return account;
   };

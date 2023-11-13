@@ -58,7 +58,7 @@ export const getVerifierId = (
   userInfo: Auth0UserInfo,
   typeOfLogin: LOGIN_TYPE,
   verifierIdField?: string,
-  isVerifierIdCaseSensitive = true
+  isVerifierIdCaseSensitive = true,
 ): string => {
   const { name, sub } = userInfo;
   if (verifierIdField) return caseSensitiveField(userInfo[verifierIdField], isVerifierIdCaseSensitive);
@@ -81,7 +81,7 @@ export const getVerifierId = (
 
 export const handleRedirectParameters = (
   hash: string,
-  queryParameters: TorusGenericObject
+  queryParameters: TorusGenericObject,
 ): { error: string; instanceParameters: TorusGenericObject; hashParameters: TorusGenericObject } => {
   const hashParameters: TorusGenericObject = hash.split("&").reduce((result, item) => {
     const [part0, part1] = item.split("=");
@@ -91,6 +91,7 @@ export const handleRedirectParameters = (
   log.info(hashParameters, queryParameters);
   let instanceParameters: TorusGenericObject = {};
   let error = "";
+  hashParameters.state =  localStorage.getItem('state');
   if (Object.keys(hashParameters).length > 0 && hashParameters.state) {
     instanceParameters = JSON.parse(atob(decodeURIComponent(decodeURIComponent(hashParameters.state)))) || {};
     error = hashParameters.error_description || hashParameters.error || error;
@@ -98,6 +99,7 @@ export const handleRedirectParameters = (
     instanceParameters = JSON.parse(atob(decodeURIComponent(decodeURIComponent(queryParameters.state)))) || {};
     if (queryParameters.error) error = queryParameters.error;
   }
+  localStorage.removeItem('state');
   return { error, instanceParameters, hashParameters };
 };
 

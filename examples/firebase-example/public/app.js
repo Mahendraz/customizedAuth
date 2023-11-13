@@ -163,7 +163,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
       TORUS_DIRECT_SDK_VERIFIER_NAME,
       firebase.auth().currentUser.uid,
       { verifier_id: firebase.auth().currentUser.uid },
-      idToken
+      idToken,
     );
     handleSignedInUser(user, privateKey, publicAddress);
   } else {
@@ -189,7 +189,7 @@ function handleConfigChange() {
       "&disableEmailSignUpStatus=" +
       currentDisableSignUpStatus +
       "&adminRestrictedOperationStatus=" +
-      currentAdminRestrictedOperationStatus
+      currentAdminRestrictedOperationStatus,
   );
   // Reset the inline widget so the config changes are reflected.
   ui.reset();

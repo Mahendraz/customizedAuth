@@ -18,7 +18,7 @@ export default class TwitchHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
@@ -36,7 +36,7 @@ export default class TwitchHandler extends AbstractLoginHandler {
         scope: this.SCOPE,
         force_verify: true,
       },
-      clonedParams
+      clonedParams,
     );
     Object.keys(finalJwtParams).forEach((key) => {
       if (finalJwtParams[key]) finalUrl.searchParams.append(key, finalJwtParams[key]);
@@ -53,7 +53,7 @@ export default class TwitchHandler extends AbstractLoginHandler {
           Authorization: `Bearer ${accessToken}`,
           "Client-ID": this.clientId,
         },
-      }
+      },
     );
     const [{ profile_image_url: profileImage = "", display_name: name = "", email = "", id: verifierId }] = userInfo.data || [];
     return {

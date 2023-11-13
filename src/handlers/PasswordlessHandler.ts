@@ -24,7 +24,7 @@ export default class JwtHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
@@ -124,7 +124,7 @@ export default class JwtHandler extends AbstractLoginHandler {
           },
           {
             authParams: this.jwtParams,
-          }
+          },
         );
         // using stringify and parse to remove undefined params
         // This method is only resolved when the user clicks the email link

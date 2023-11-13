@@ -17,7 +17,7 @@ Then copy and paste the Web snippet code found in the firebase console (either b
 your web app" button in your Project overview, or clicking the "Web setup" button in the Auth page)
 in the `config.js` file.
 
- - `Google OAuth provider note`: You will need to ensure that the OAuth 2.0 Client ID you are using includes the Authorized redirect URI for your firebase handler `https://<firebase-project-id>.firebaseapp.com/__/auth/handler`. Navigate to `https://console.cloud.google.com/apis/credentials?authuser=1&project=<firbase-project-id>`, click on the relevant client id in the "OAuth 2.0 Client IDs" list, add `https://<firebase-project-id>.firebaseapp.com/__/auth/handler` to the "Authorized redirect URIs", and click Save.
+- `Google OAuth provider note`: You will need to ensure that the OAuth 2.0 Client ID you are using includes the Authorized redirect URI for your firebase handler `https://<firebase-project-id>.firebaseapp.com/__/auth/handler`. Navigate to `https://console.cloud.google.com/apis/credentials?authuser=1&project=<firbase-project-id>`, click on the relevant client id in the "OAuth 2.0 Client IDs" list, add `https://<firebase-project-id>.firebaseapp.com/__/auth/handler` to the "Authorized redirect URIs", and click Save.
 
 ## CustomAuth Prerequisites
 

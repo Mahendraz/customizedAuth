@@ -20,7 +20,7 @@ export default class GoogleHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
@@ -39,7 +39,7 @@ export default class GoogleHandler extends AbstractLoginHandler {
         scope: this.SCOPE,
         nonce: this.nonce,
       },
-      clonedParams
+      clonedParams,
     );
     Object.keys(finalJwtParams).forEach((key) => {
       if (finalJwtParams[key]) finalUrl.searchParams.append(key, finalJwtParams[key]);

@@ -21,7 +21,7 @@ abstract class AbstractLoginHandler implements ILoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {}
 
   get state(): string {
@@ -33,8 +33,8 @@ abstract class AbstractLoginHandler implements ILoginHandler {
           verifier: this.verifier,
           typeOfLogin: this.typeOfLogin,
           redirectToOpener: this.redirectToOpener || false,
-        })
-      )
+        }),
+      ),
     );
   }
 

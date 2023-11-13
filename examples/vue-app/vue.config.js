@@ -22,12 +22,12 @@ module.exports = {
     config.plugins.push(
       new ProvidePlugin({
         Buffer: ["buffer", "Buffer"],
-      })
+      }),
     );
     config.plugins.push(
       new ProvidePlugin({
         process: "process/browser",
-      })
+      }),
     );
     config.resolve.fallback = {
       ...(config.resolve.fallback || {}),

@@ -311,9 +311,9 @@ self.addEventListener("fetch", function (event) {
 ${""}
   `,
             ],
-            { type: "text/html" }
-          )
-        )
+            { type: "text/html" },
+          ),
+        ),
       );
     }
   } catch (error) {

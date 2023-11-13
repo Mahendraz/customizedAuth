@@ -91,7 +91,7 @@ export default defineComponent({
     },
     _handleRedirectParameters(
       hash: string,
-      queryParameters: Record<string, string | null>
+      queryParameters: Record<string, string | null>,
     ): {
       error: string;
       instanceParameters: Record<string, any>;

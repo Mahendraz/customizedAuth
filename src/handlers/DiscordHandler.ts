@@ -18,7 +18,7 @@ export default class DiscordHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
@@ -35,7 +35,7 @@ export default class DiscordHandler extends AbstractLoginHandler {
         redirect_uri: this.redirect_uri,
         scope: this.SCOPE,
       },
-      clonedParams
+      clonedParams,
     );
     Object.keys(finalJwtParams).forEach((key) => {
       if (finalJwtParams[key]) finalUrl.searchParams.append(key, finalJwtParams[key]);
@@ -51,7 +51,7 @@ export default class DiscordHandler extends AbstractLoginHandler {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-      }
+      },
     );
     const { id, avatar, email = "", username: name = "", discriminator = "" } = userInfo;
     const profileImage =

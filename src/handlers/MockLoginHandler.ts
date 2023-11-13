@@ -18,7 +18,7 @@ export default class MockLoginHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
@@ -33,7 +33,7 @@ export default class MockLoginHandler extends AbstractLoginHandler {
         client_id: this.clientId,
         nonce: this.nonce,
       },
-      clonedParams
+      clonedParams,
     );
 
     this.finalURL = new URL(constructURL({ baseURL: this.redirect_uri, query: null, hash: finalJwtParams }));

@@ -28,6 +28,7 @@ import { AGGREGATE_VERIFIER, LOGIN, SENTRY_TXNS, TORUS_METHOD, UX_MODE, UX_MODE_
 import { handleRedirectParameters, isFirefox, padUrlString } from "./utils/helpers";
 import log from "./utils/loglevel";
 import StorageHelper from "./utils/StorageHelper";
+import { UserManager  } from 'oidc-client';
 
 class CustomAuth {
   isInitialized: boolean;
@@ -48,6 +49,8 @@ class CustomAuth {
   storageHelper: StorageHelper;
 
   sentryHandler: SentryHandler;
+
+  userManager: UserManager;
 
   constructor({
     baseUrl,
@@ -92,7 +95,19 @@ class CustomAuth {
     this.storageHelper = new StorageHelper(storageServerUrl);
     this.sentryHandler = new SentryHandler(sentry);
   }
-
+  async initOIDC(auth, client, redirect_uri): Promise<void> {
+    
+    let oidcConfig = {
+      authority: auth,
+      client_id: client,
+      response_type : 'token id_token',
+      scope : 'openid profile email offline_access',
+      redirect_uri: redirect_uri,
+      extraQueryParams: {prompt: "login"}
+    };
+    this.userManager = new UserManager(oidcConfig);
+  }
+  
   async init({ skipSw = false, skipInit = false, skipPrefetch = false }: InitParams = {}): Promise<void> {
     this.storageHelper.init();
     if (skipInit) {
@@ -155,10 +170,8 @@ class CustomAuth {
       if (this.config.uxMode === UX_MODE.REDIRECT) {
         await this.storageHelper.storeLoginDetails({ method: TORUS_METHOD.TRIGGER_LOGIN, args }, loginHandler.nonce);
       }
-      loginParams = await loginHandler.handleLoginWindow({
-        locationReplaceOnRedirect: this.config.locationReplaceOnRedirect,
-        popupFeatures: this.config.popupFeatures,
-      });
+      this.initOIDC(jwtParams.domain, clientId, this.config.redirect_uri); 
+      this.userManager.signinRedirect();
       if (this.config.uxMode === UX_MODE.REDIRECT) return null;
     }
 
@@ -201,7 +214,7 @@ class CustomAuth {
       userInfo.verifierId,
       { verifier_id: userInfo.verifierId },
       loginParams.idToken || loginParams.accessToken,
-      userInfo.extraVerifierParams
+      userInfo.extraVerifierParams,
     );
     return {
       ...torusKey,
@@ -343,7 +356,7 @@ class CustomAuth {
       userInfo.verifierId,
       { verifier_id: userInfo.verifierId },
       loginParams.idToken || loginParams.accessToken,
-      userInfo.extraVerifierParams
+      userInfo.extraVerifierParams,
     );
 
     const { verifierIdentifier, subVerifierDetailsArray } = aggregateLoginParams;
@@ -366,7 +379,7 @@ class CustomAuth {
       aggregateVerifierId,
       aggregateVerifierParams,
       aggregateIdToken,
-      userInfo.extraVerifierParams
+      userInfo.extraVerifierParams,
     );
     const [torusKey1, torusKey2] = await Promise.all([torusKey1Promise, torusKey2Promise]);
     return {
@@ -383,7 +396,7 @@ class CustomAuth {
     verifierId: string,
     verifierParams: { verifier_id: string },
     idToken: string,
-    additionalParams?: ExtraParams
+    additionalParams?: ExtraParams,
   ): Promise<TorusKey> {
     const nodeTx = this.sentryHandler.startTransaction({
       name: SENTRY_TXNS.FETCH_NODE_DETAILS,
@@ -425,7 +438,7 @@ class CustomAuth {
   async getAggregateTorusKey(
     verifier: string,
     verifierId: string, // unique identifier for user e.g. sub on jwt
-    subVerifierInfoArray: TorusSubVerifierInfo[]
+    subVerifierInfoArray: TorusSubVerifierInfo[],
   ): Promise<TorusKey> {
     const aggregateVerifierParams = { verify_params: [], sub_verifier_ids: [], verifier_id: "" };
     const aggregateIdTokenSeeds = [];

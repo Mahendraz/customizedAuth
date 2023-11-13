@@ -198,7 +198,7 @@ export default defineComponent({
       const account = getStarkHDAccount(
         ((this.loginDetails as any)?.result?.privateKey as string).padStart(64, "0"),
         index,
-        STARKNET_NETWORKS.testnet
+        STARKNET_NETWORKS.testnet,
       );
       return account;
     },

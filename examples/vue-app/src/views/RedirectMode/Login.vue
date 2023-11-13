@@ -9,7 +9,13 @@
         </select>
       </div>
       <input v-model="login_hint" v-if="selectedVerifier === 'torus_email_passwordless'" placeholder="Enter an email" required class="input-field" />
-      <input v-model="login_hint" v-if="selectedVerifier === 'torus_sms_passwordless'" placeholder="Eg: (+{cc}-{number})" required class="input-field" />
+      <input
+        v-model="login_hint"
+        v-if="selectedVerifier === 'torus_sms_passwordless'"
+        placeholder="Eg: (+{cc}-{number})"
+        required
+        class="input-field"
+      />
       <div :style="{ marginTop: '20px' }">
         <button @click="login" class="btn-login">Login with Torus</button>
       </div>
@@ -88,7 +94,7 @@ export default defineComponent({
           verifierIdField: "name",
           login_hint: this.login_hint,
           connection: "sms",
-        }
+        },
       };
     },
   },

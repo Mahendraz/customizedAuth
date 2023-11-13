@@ -23,13 +23,14 @@ export default class JwtHandler extends AbstractLoginHandler {
     readonly uxMode: UX_MODE_TYPE,
     readonly redirectToOpener?: boolean,
     readonly jwtParams?: Auth0ClientOptions,
-    readonly customState?: TorusGenericObject
+    readonly customState?: TorusGenericObject,
   ) {
     super(clientId, verifier, redirect_uri, typeOfLogin, uxMode, redirectToOpener, jwtParams, customState);
     this.setFinalUrl();
   }
 
   setFinalUrl(): void {
+    localStorage.setItem('state', this.state);
     const { domain } = this.jwtParams;
     const finalUrl = validateAndConstructUrl(domain);
     finalUrl.pathname += finalUrl.pathname.endsWith("/") ? "authorize" : "/authorize";
@@ -46,7 +47,7 @@ export default class JwtHandler extends AbstractLoginHandler {
         connection: loginToConnectionMap[this.typeOfLogin],
         nonce: this.nonce,
       },
-      clonedParams
+      clonedParams,
     );
     Object.keys(finalJwtParams).forEach((key) => {
       if (finalJwtParams[key]) finalUrl.searchParams.append(key, finalJwtParams[key]);
