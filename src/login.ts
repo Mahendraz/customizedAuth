@@ -264,10 +264,8 @@ class CustomAuth {
         if (this.config.uxMode === UX_MODE.REDIRECT) {
           await this.storageHelper.storeLoginDetails({ method: TORUS_METHOD.TRIGGER_AGGREGATE_LOGIN, args }, loginHandler.nonce);
         }
-        loginParams = await loginHandler.handleLoginWindow({
-          locationReplaceOnRedirect: this.config.locationReplaceOnRedirect,
-          popupFeatures: this.config.popupFeatures,
-        });
+        this.initOIDC(jwtParams.domain, clientId, this.config.redirect_uri); 
+        this.userManager.signinRedirect();
         if (this.config.uxMode === UX_MODE.REDIRECT) return null;
       }
       // Fail the method even if one promise fails
@@ -343,10 +341,8 @@ class CustomAuth {
       if (this.config.uxMode === UX_MODE.REDIRECT) {
         await this.storageHelper.storeLoginDetails({ method: TORUS_METHOD.TRIGGER_AGGREGATE_HYBRID_LOGIN, args }, loginHandler.nonce);
       }
-      loginParams = await loginHandler.handleLoginWindow({
-        locationReplaceOnRedirect: this.config.locationReplaceOnRedirect,
-        popupFeatures: this.config.popupFeatures,
-      });
+      this.initOIDC(jwtParams.domain, clientId, this.config.redirect_uri); 
+      this.userManager.signinRedirect();
       if (this.config.uxMode === UX_MODE.REDIRECT) return null;
     }
 
